@@ -1,0 +1,29 @@
+name: Lezzetin Evi - 2 Saatlik Tarif Güncelleme
+
+on:
+  schedule:
+    - cron: '0 */2 * * *'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Depoyu klonla
+      uses: actions/checkout@v3
+
+    - name: Python kurulumu
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.x'
+
+    - name: generator.py çalıştır
+      run: python generator.py
+
+    - name: Değişiklikleri GitHub'a gönder
+      run: |
+        git config user.name "GitHub Actions"
+        git config user.email "actions@github.com"
+        git add index.html
+        git commit -m "🧁 Yeni tarif otomatik eklendi"
+        git push
